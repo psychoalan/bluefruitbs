@@ -25,7 +25,6 @@
 		<h4>Set brightness</h4>
 		<input type="range" min="0" max="255" step="0.1" val="20">
 		<br>
-		<!-- <button id="ledOnButton" onclick = "data('1')">Set led ON</button> -->
 		<button id="ledOnButton" onclick = "data('1')">Set led ON</button>
 		<br><br>
 		<button id="ledOffButton" onclick = "data('0')">Set Led Off</button>
@@ -40,6 +39,21 @@
 		<br>
 		<div id="sendDiv"></div>
 		<br><br>
+		
+		<h4>Alarm</h4>
+		<div id="alertBox" class="alert-box"></div>
+		<div id="timeBox" class="time-box"></div>
+		<div class="alarm-form">
+		<div class="alarm-form">
+		<form id="alarmForm"form onsubmit="return false;">
+            <input id="alarmHour" form="alarmForm" class="alarm-input"/>
+            <input id="alarmMinute" class="alarm-input"/>
+            <input id="alarmSecond" class="alarm-input"/>
+            <button id="setAlarmBtn" form="alarmForm" class="alarm-btn set-btn" onclick="myFunction()">SET ALARM</button>
+			<br><br>
+		</form>
+		</div>
+		<br>
 		<button id="disconnectButton"onClick="disconnect()">Disconnect</button>
 		<div id="receiveDiv"></div>
     </body>
