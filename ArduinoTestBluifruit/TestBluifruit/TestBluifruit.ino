@@ -1,3 +1,12 @@
+#include <Adafruit_ATParser.h>
+#include <Adafruit_BLE.h>
+#include <Adafruit_BLEBattery.h>
+#include <Adafruit_BLEEddystone.h>
+#include <Adafruit_BLEGatt.h>
+#include <Adafruit_BLEMIDI.h>
+#include <Adafruit_BluefruitLE_SPI.h>
+#include <Adafruit_BluefruitLE_UART.h>
+
 /*********************************************************************
   This is an example based on nRF51822 based Bluefruit LE modules
 
@@ -43,6 +52,12 @@ void error(const __FlashStringHelper*err) {
             automatically on startup)
 */
 /**************************************************************************/
+
+int led = 9; // the PWM pin the LED is attached to
+int brightness = 0;    // how bright the LED is
+int fadeAmount = 5;    // how many points to fade the LED by
+
+
 void setup(void)
 {
   while (!Serial);  // required for Flora & Micro
@@ -97,7 +112,7 @@ void setup(void)
   }
 
   //Give module a new name
-  ble.println("AT+GAPDEVNAME=LONE"); // named LONE
+  ble.println("AT+GAPDEVNAME=PLEASEGODHELPME"); // named LONE
 
   // Check response status
   ble.waitForOK();
@@ -107,6 +122,7 @@ void setup(void)
   ble.setMode(BLUEFRUIT_MODE_DATA);
 
   Serial.println(F("******************************"));
+  pinMode(led, OUTPUT);
 }
 
 /**************************************************************************/
@@ -117,6 +133,14 @@ void setup(void)
 void loop(void)
 {
   // Check for user input
+  
+  //Serial.print("Led On");
+  //digitalWrite(led, HIGH);
+  //delay(1000);
+  //Serial.print("Led Off");
+  //digitalWrite(led, LOW);
+  
+  
   char n, inputs[BUFSIZE + 1];
 
   if (Serial.available())
@@ -130,14 +154,43 @@ void loop(void)
     // Send input data to host via Bluefruit
     ble.print(inputs);
   }
+  //Serial.print("I am hier ");
   if (ble.available()) {
     Serial.print("* "); Serial.print(ble.available()); Serial.println(F(" bytes available from BTLE"));
   }
   // Echo received data
-  while ( ble.available() )
+  //while
+  if ( ble.available() )
   {
     int c = ble.read();
-    Serial.print((char)c);
-  }
-  delay(1000);
+    //Serial.print(c);
+    //1 in html is 49
+    
+    if(c==49){
+    
+      //Serial.print("c=1");
+      digitalWrite(led, HIGH);
+      delay(400);
+    } else if(c==48)
+    {
+      digitalWrite(led, LOW);
+    }
+    else if(c==50){
+      //analogWrite(led, brightness);
+      //delay(100);
+      //brightness = brightness + fadeAmount;
+      // reverse the direction of the fading at the ends of the fade:
+      for(int i=0;i<1000;i++){
+        analogWrite(led, brightness);
+        //delay(100);
+        brightness = brightness + fadeAmount;
+        if (brightness <= 0 || brightness >= 255) {
+          fadeAmount = -fadeAmount;
+        }
+      }
+      // wait for 30 milliseconds to see the dimming effect
+      delay(50);  
+     }
+  } 
+  //delay(1000);
 }
