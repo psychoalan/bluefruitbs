@@ -113,5 +113,44 @@ function onDisconnect(){
 function onError(reason)  {
 	alert("ERROR: " + reason); // real apps should use notification.alert
 }
+function myFunction() {
+                    var div = document.createElement('div');
+                    div.innerHTML = "Alarm set to: " + document.getElementById("alarmHour").value + ":" + " " + document.getElementById("alarmMinute").value
+                    + ":"+" "+document.getElementById("alarmSecond").value;
+                    document.body.appendChild(div);
+
+
+                    var today = new Date();
+                    var h = today.getHours();
+                    var m = today.getMinutes();
+                    var s = today.getSeconds();
+
+                    var div = document.createElement('div');
+
+                    div.innerHTML = "Current Time: " + h + ":" + m +":"+ s;
+                    document.body.appendChild(div);
+
+
+                    var setTimeInSeconds= +document.getElementById("alarmHour").value * +3600 + +document.getElementById("alarmMinute").value*+60+ +document.getElementById("alarmSecond").value;
+                    var currentTimeInSecond = parseInt(+h*+3600 + +m*+60+ +s);
+
+                    console.log("Alarm set" + setTimeInSeconds);
+                    console.log("Current time" + currentTimeInSecond);
+
+                    if(setTimeInSeconds>currentTimeInSecond){
+                        var alarmRings= setTimeInSeconds - currentTimeInSecond;
+                        var div = document.createElement('div');
+
+                        div.innerHTML = "Alarm will ring in:" + alarmRings +"seconds" ;
+                        document.body.appendChild(div)
+                    }
+                    else{
+                        console.log("time passed");
+                        var div = document.createElement('div');
+                        div.innerHTML = "Time passed" ;
+                        document.body.appendChild(div)
+                    }
+}
+
 
 	
