@@ -90,12 +90,13 @@ function onConnError(){
 	document.getElementById("receiveDiv").innerHTML =  "Received: " + bytesToString(data) + "<br/>";
 }
 
+//should be deleted
 function data(txt){
 	messageInput.value = txt;
 }	
 
-function sendData() { // send data to Arduino
-	 var data = stringToBytes(messageInput.value);
+function sendData(data) { // send data to Arduino
+	 var data = stringToBytes(data);
 	ble.writeWithoutResponse(ConnDeviceId, blue.serviceUUID, blue.txCharacteristic, data, onSend, onError);
 }
 	
@@ -114,42 +115,52 @@ function onError(reason)  {
 	alert("ERROR: " + reason); // real apps should use notification.alert
 }
 function myFunction() {
-                    var div = document.createElement('div');
-                    div.innerHTML = "Alarm set to: " + document.getElementById("alarmHour").value + ":" + " " + document.getElementById("alarmMinute").value
-                    + ":"+" "+document.getElementById("alarmSecond").value;
-                    document.body.appendChild(div);
-
-
-                    var today = new Date();
-                    var h = today.getHours();
-                    var m = today.getMinutes();
-                    var s = today.getSeconds();
-
-                    var div = document.createElement('div');
-
-                    div.innerHTML = "Current Time: " + h + ":" + m +":"+ s;
-                    document.body.appendChild(div);
-
-
-                    var setTimeInSeconds= +document.getElementById("alarmHour").value * +3600 + +document.getElementById("alarmMinute").value*+60+ +document.getElementById("alarmSecond").value;
-                    var currentTimeInSecond = parseInt(+h*+3600 + +m*+60+ +s);
-
-                    console.log("Alarm set" + setTimeInSeconds);
-                    console.log("Current time" + currentTimeInSecond);
-
-                    if(setTimeInSeconds>currentTimeInSecond){
-                        var alarmRings= setTimeInSeconds - currentTimeInSecond;
-                        var div = document.createElement('div');
-
-                        div.innerHTML = "Alarm will ring in:" + alarmRings +"seconds" ;
-                        document.body.appendChild(div)
-                    }
-                    else{
-                        console.log("time passed");
-                        var div = document.createElement('div');
-                        div.innerHTML = "Time passed" ;
-                        document.body.appendChild(div)
-                    }
+	var div = document.createElement('div');
+	div.innerHTML = "Alarm set to: " + document.getElementById("alarmHour").value + ":" + " " + document.getElementById("alarmMinute").value
+	+ ":"+" "+document.getElementById("alarmSecond").value;
+	document.body.appendChild(div);
+	
+	
+	var today = new Date();
+	var h = today.getHours();
+	var m = today.getMinutes();
+	var s = today.getSeconds();
+	
+	var div = document.createElement('div');
+	
+	div.innerHTML = "Current Time: " + h + ":" + m +":"+ s;
+	document.body.appendChild(div);
+	
+	
+	var setTimeInSeconds= +document.getElementById("alarmHour").value * +3600 + +document.getElementById("alarmMinute").value*+60+ +document.getElementById("alarmSecond").value;
+	var currentTimeInSecond = parseInt(+h*+3600 + +m*+60+ +s);
+	
+	console.log("Alarm set" + setTimeInSeconds);
+	console.log("Current time" + currentTimeInSecond);
+	
+	
+	
+	if(setTimeInSeconds>currentTimeInSecond){
+		var alarmRings= setTimeInSeconds - currentTimeInSecond;
+		var div = document.createElement('div');
+		
+		div.innerHTML = "Alarm will ring in:" + alarmRings +"seconds" ;
+		document.body.appendChild(div);
+	}
+	else{
+		var alarmRings= setTimeInSeconds + (86400-currentTimeInSecond);
+		var div = document.createElement('div');
+		div.innerHTML = "Alarm will ring in:" + alarmRings + " seconds";
+		document.body.appendChild(div);
+	}
+	sendTime();
+	//alarmRings=
+	
+					
+}
+function sendTime() { // send alarm to Arduino
+	 var alarmRings = stringToBytes(alarmRings);
+	ble.writeWithoutResponse(ConnDeviceId, blue.serviceUUID, blue.txCharacteristic, alarmRings, onSend, onError);
 }
 
 
