@@ -160,7 +160,7 @@ function myFunction() {
 	
 					
 }
-function sendTime(var alarmRings) { // send alarm to Arduino
+function sendTime(alarmRings) { // send alarm to Arduino
 	var alarmRings = stringToBytes(alarmRings);
 	ble.writeWithoutResponse(ConnDeviceId, blue.serviceUUID, blue.txCharacteristic, alarmRings, onSend, onError);
 }
