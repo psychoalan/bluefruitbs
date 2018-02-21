@@ -167,7 +167,7 @@ void loop(void)
   {
     int i = 0;
     while (ble.available()) {
-      Serial.println("Read one byte");
+      //Serial.println("Read one byte");
       c = ble.read();
       ble_data[i++] = c;
     }
