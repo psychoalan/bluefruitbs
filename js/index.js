@@ -150,14 +150,15 @@ function myFunction() {
 		sendTime(alarmRings);
 	}
 	else{
-		var alarmRings= setTimeInSeconds + (86400-currentTimeInSecond);
+		var alarmRings1= setTimeInSeconds + (86400-currentTimeInSecond);
+		var alarmRings = alarmRings1.toString(); 
 		var div = document.createElement('div');
 		div.innerHTML = "Alarm will ring in:" + alarmRings + " seconds";
 		document.body.appendChild(div);
 		sendTime(alarmRings);
 	}
 	
-	//alarmRings=
+
 	
 					
 }
