@@ -141,7 +141,8 @@ function myFunction() {
 	
 	
 	if(setTimeInSeconds>currentTimeInSecond){
-		var alarmRings= setTimeInSeconds - currentTimeInSecond;
+		var alarmRings1= setTimeInSeconds - currentTimeInSecond;
+		var alarmRings = alarmRings1.toString(); 
 		var div = document.createElement('div');
 		
 		div.innerHTML = "Alarm will ring in:" + alarmRings +"seconds" ;
