@@ -106,7 +106,9 @@ function onSend(){
 
 function disconnect() {
 	ble.disconnect(deviceId, onDisconnect, onError);
-}function onDisconnect(){
+}
+
+function onDisconnect(){
 	document.getElementById("statusDiv").innerHTML = "Status: Disconnected";
 }
 function onError(reason)  {
@@ -158,8 +160,8 @@ function myFunction() {
 	
 					
 }
-function sendTime(alarmRingsStr) { // send alarm to Arduino
-	var alarmRings = stringToBytes(alarmRingsStr);
+function sendTime(var alarmRings) { // send alarm to Arduino
+	var alarmRings = stringToBytes(alarmRings);
 	ble.writeWithoutResponse(ConnDeviceId, blue.serviceUUID, blue.txCharacteristic, alarmRings, onSend, onError);
 }
 
