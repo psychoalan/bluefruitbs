@@ -165,5 +165,4 @@ function sendTime(alarmRingsStr) { // send alarm to Arduino
 	ble.writeWithoutResponse(ConnDeviceId, blue.serviceUUID, blue.txCharacteristic, alarmRings, onSend, onError);
 }
 
-
 	
