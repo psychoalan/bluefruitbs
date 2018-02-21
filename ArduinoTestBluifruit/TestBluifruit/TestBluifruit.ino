@@ -6,6 +6,7 @@
 #include <Adafruit_BLEMIDI.h>
 #include <Adafruit_BluefruitLE_SPI.h>
 #include <Adafruit_BluefruitLE_UART.h>
+#include <time.h>
 
 /*********************************************************************
   This is an example based on nRF51822 based Bluefruit LE modules
@@ -56,8 +57,8 @@ void error(const __FlashStringHelper*err) {
 int led = 9; // the PWM pin the LED is attached to
 int brightness = 0;    // how bright the LED is
 int fadeAmount = 5;    // how many points to fade the LED by
-
-
+int time1 = 60;
+int timeleft = 0;
 void setup(void)
 {
   while (!Serial);  // required for Flora & Micro
@@ -139,10 +140,12 @@ void loop(void)
   //delay(1000);
   //Serial.print("Led Off");
   //digitalWrite(led, LOW);
-  
+  int a = 1;
   
   char n, inputs[BUFSIZE + 1];
-
+  char ble_data[50];
+  int c;
+  
   if (Serial.available())
   {
     n = Serial.readBytes(inputs, BUFSIZE);
@@ -162,10 +165,17 @@ void loop(void)
   //while
   if ( ble.available() )
   {
-    int c = ble.read();
+    int i = 0;
+    while (ble.available()) {
+      Serial.println("Read one byte");
+      c = ble.read();
+      ble_data[i++] = c;
+    }
+    ble_data[i] = 0;
+    Serial.println(ble_data);
     //Serial.print(c);
     //1 in html is 49
-    
+    //Serial.println(c);
     if(c==49){
     
       //Serial.print("c=1");
@@ -175,22 +185,43 @@ void loop(void)
     {
       digitalWrite(led, LOW);
     }
-    else if(c==50){
-      //analogWrite(led, brightness);
-      //delay(100);
-      //brightness = brightness + fadeAmount;
-      // reverse the direction of the fading at the ends of the fade:
-      for(int i=0;i<1000;i++){
-        analogWrite(led, brightness);
-        //delay(100);
-        brightness = brightness + fadeAmount;
-        if (brightness <= 0 || brightness >= 255) {
-          fadeAmount = -fadeAmount;
+//    else if(c==50){
+//      for(int i=0;i<1000;i++){
+//        analogWrite(led, brightness);
+//        brightness = brightness + fadeAmount;
+//        
+//        if (brightness <= 0 || brightness >= 255) {
+//          fadeAmount = -fadeAmount;
+//        }
+//      }
+//      // wait for 30 milliseconds to see the dimming effect
+//      delay(50);  
+//     }
+     else if(c==50){
+      timeleft = time1;
+      do{
+      Serial.println("I'm here "); 
+      Serial.println("");
+      //ble.read();
+      timeleft--;
+      
+      delay(1000);
+      Serial.println("time: ");
+      Serial.println(time1);
+      Serial.println("timeleft: ");
+      Serial.println(timeleft);
+      
+      //int timeleft = time - 1;
+      if (timeleft <= 0){
+        for(int i=0;i<100;i++){
+          analogWrite(led, brightness);
+          brightness++;
+          delay(100);
         }
       }
-      // wait for 30 milliseconds to see the dimming effect
-      delay(50);  
-     }
+      
+      //int a = 0;
+      }while(c==50);
   } 
   //delay(1000);
-}
+}}
