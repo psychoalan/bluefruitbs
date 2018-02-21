@@ -106,6 +106,7 @@ function onSend(){
 
 function disconnect() {
 	ble.disconnect(deviceId, onDisconnect, onError);
+
 }
 
 function onDisconnect(){
@@ -146,14 +147,16 @@ function myFunction() {
 		
 		div.innerHTML = "Alarm will ring in:" + alarmRings +"seconds" ;
 		document.body.appendChild(div);
+		sendTime();
 	}
 	else{
 		var alarmRings= setTimeInSeconds + (86400-currentTimeInSecond);
 		var div = document.createElement('div');
 		div.innerHTML = "Alarm will ring in:" + alarmRings + " seconds";
 		document.body.appendChild(div);
+		sendTime();
 	}
-	sendTime();
+	
 	//alarmRings=
 	
 					
