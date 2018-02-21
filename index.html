@@ -25,11 +25,11 @@
 		<h4>Set brightness</h4>
 		<input type="range" min="0" max="255" step="0.1" val="20">
 		<br>
-		<button id="ledOnButton" onclick = "data('1')">Set led ON</button>
+		<button id="ledOnButton" onclick = "sendData('1')">Set led ON</button>
 		<br><br>
-		<button id="ledOffButton" onclick = "data('0')">Set Led Off</button>
+		<button id="ledOffButton" onclick = "sendData('0')">Set Led Off</button>
 		<br><br>
-		<button id="ledDimButton" onclick = "data('2')">Set Led to Dim</button>
+		<button id="ledDimButton" onclick = "sendData('2')">Set Led to Dim</button>
 		<br><br><br>
 		<input type="text" id="messageInput" value="Hello"/>
 		<br>
