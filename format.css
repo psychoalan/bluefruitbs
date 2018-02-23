@@ -1,5 +1,5 @@
 body{
-	background-color: green;
+	background-color: coral;
 }	
 img{
 	width: 100%;	
@@ -39,5 +39,8 @@ img{
 	width: 100%;
 }
 #ledDimButton{
+	width: 100%;
+}
+#setAlarmBtn{
 	width: 100%;
 }
