@@ -135,13 +135,6 @@ void loop(void)
 {
   // Check for user input
   
-  //Serial.print("Led On");
-  //digitalWrite(led, HIGH);
-  //delay(1000);
-  //Serial.print("Led Off");
-  //digitalWrite(led, LOW);
-  int a = 1;
-  
   char n, inputs[BUFSIZE + 1];
   char ble_data[50];
   int c;
@@ -172,56 +165,49 @@ void loop(void)
       ble_data[i++] = c;
     }
     ble_data[i] = 0;
+    Serial.println("Data = ");
     Serial.println(ble_data);
-    //Serial.print(c);
-    //1 in html is 49
-    //Serial.println(c);
-    if(c==49){
+    int timetowakeup = atoi(ble_data);
+    Serial.println("c = ");
+    Serial.println(c);
     
-      //Serial.print("c=1");
+    int x = -c;
+    //Serial.println(x);
+    if(x==-49){
       digitalWrite(led, HIGH);
-      delay(400);
-    } else if(c==48)
+    } else if(x==-48)
     {
       digitalWrite(led, LOW);
     }
-//    else if(c==50){
-//      for(int i=0;i<1000;i++){
-//        analogWrite(led, brightness);
-//        brightness = brightness + fadeAmount;
-//        
-//        if (brightness <= 0 || brightness >= 255) {
-//          fadeAmount = -fadeAmount;
-//        }
-//      }
-//      // wait for 30 milliseconds to see the dimming effect
-//      delay(50);  
-//     }
-     else if(c==50){
-      timeleft = time1;
-      do{
-      Serial.println("I'm here "); 
-      Serial.println("");
-      //ble.read();
-      timeleft--;
-      
-      delay(1000);
-      Serial.println("time: ");
-      Serial.println(time1);
-      Serial.println("timeleft: ");
-      Serial.println(timeleft);
-      
-      //int timeleft = time - 1;
-      if (timeleft <= 0){
-        for(int i=0;i<100;i++){
-          analogWrite(led, brightness);
-          brightness++;
-          delay(100);
-        }
+    else if(x==-50){
+      //for(int i=0;i<1000;i++){
+      int fadeAmount2 = 55;
+      analogWrite(led, brightness);
+      brightness = brightness + fadeAmount2;
+      if (brightness <= 0 || brightness >= 255) {
+        fadeAmount2 = -fadeAmount2;
       }
+   }
+   else {
+     
+     timeleft = timetowakeup+10;
+       do{
+         timeleft--;
+         delay(1000);
+         Serial.println("time: ");
+         Serial.println(timetowakeup);
+         Serial.println("timeleft: ");
+         Serial.println(timeleft);
       
-      //int a = 0;
-      }while(c==50);
-  } 
-  //delay(1000);
-}}
+         //int timeleft = time - 1;
+         if (timeleft == 0){
+           Serial.println("Time to wake up"); 
+           for(brightness=0; brightness<255; brightness++){
+             analogWrite(led, brightness);
+             delay(1000);
+          }
+        }
+      }while(timeleft>0);
+    } 
+  }
+}
