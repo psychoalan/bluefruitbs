@@ -6,7 +6,6 @@
 #include <Adafruit_BLEMIDI.h>
 #include <Adafruit_BluefruitLE_SPI.h>
 #include <Adafruit_BluefruitLE_UART.h>
-#include <time.h>
 
 /*********************************************************************
   This is an example based on nRF51822 based Bluefruit LE modules
@@ -54,11 +53,6 @@ void error(const __FlashStringHelper*err) {
 */
 /**************************************************************************/
 
-int led = 9; // the PWM pin the LED is attached to
-int brightness = 0;    // how bright the LED is
-int fadeAmount = 5;    // how many points to fade the LED by
-int time1 = 60;
-int timeleft = 0;
 void setup(void)
 {
   while (!Serial);  // required for Flora & Micro
@@ -113,7 +107,7 @@ void setup(void)
   }
 
   //Give module a new name
-  ble.println("AT+GAPDEVNAME=PLEASEGODHELPME"); // named LONE
+  ble.println("AT+GAPDEVNAME=LED-LAMP"); // named LONE
 
   // Check response status
   ble.waitForOK();
@@ -134,9 +128,15 @@ void setup(void)
 void loop(void)
 {
   // Check for user input
-  
+      
   char n, inputs[BUFSIZE + 1];
-  char ble_data[50];
+  char ble_data[50];    // an array for storing data sent from the application
+  int led = 9;          // the PWM pin the LED is attached to
+  int brightness = 0;   // how bright the LED is
+  int fadeAmount = 5;   // how many points to fade the LED by
+  int fadeAmount2;      // how many points to fade the LED by
+  int timeleft = 0;     // time left in seconds until the alarm goes off
+  int x;
   int c;
   
   if (Serial.available())
@@ -150,13 +150,15 @@ void loop(void)
     // Send input data to host via Bluefruit
     ble.print(inputs);
   }
-  //Serial.print("I am hier ");
+  
   if (ble.available()) {
-    Serial.print("* "); Serial.print(ble.available()); Serial.println(F(" bytes available from BTLE"));
+    Serial.print("* "); 
+    Serial.print(ble.available()); 
+    Serial.println(F(" bytes available from BTLE"));
   }
   // Echo received data
-  //while
-  if ( ble.available() )
+  
+  if (ble.available())
   {
     int i = 0;
     while (ble.available()) {
@@ -164,47 +166,39 @@ void loop(void)
       c = ble.read();
       ble_data[i++] = c;
     }
-    ble_data[i] = 0;
-    Serial.println("Data = ");
-    Serial.println(ble_data);
-    int timetowakeup = atoi(ble_data);
-    Serial.println("c = ");
-    Serial.println(c);
+    ble_data[i] = 0; // reset
     
-    int x = -c;
-    //Serial.println(x);
+    //Serial.println("Data = ");
+    //Serial.println(ble_data);
+    
+    //Convert Str it Int
+    int timetowakeup = atoi(ble_data);
+    
+    x = -c;
     if(x==-49){
       digitalWrite(led, HIGH);
-    } else if(x==-48)
-    {
+    } else if(x==-48) {
       digitalWrite(led, LOW);
-    }
-    else if(x==-50){
-      //for(int i=0;i<1000;i++){
-      int fadeAmount2 = 55;
+    } else if(x==-50){
+      fadeAmount2 = 51; //255:5=51
       analogWrite(led, brightness);
       brightness = brightness + fadeAmount2;
       if (brightness <= 0 || brightness >= 255) {
         fadeAmount2 = -fadeAmount2;
       }
-   }
-   else {
-     
-     timeleft = timetowakeup+10;
-       do{
-         timeleft--;
-         delay(1000);
-         Serial.println("time: ");
-         Serial.println(timetowakeup);
-         Serial.println("timeleft: ");
-         Serial.println(timeleft);
+    } else {
+      timeleft = timetowakeup - 255; //lamp should go off before actual time so it has time to adjust brightness 
+      do{
+        delay(1000); // delay of 1 second = timeleft - 1
+        timeleft--;
+        Serial.println("time: "); Serial.println(timetowakeup);
+        Serial.println("timeleft: "); Serial.println(timeleft);
       
-         //int timeleft = time - 1;
-         if (timeleft == 0){
-           Serial.println("Time to wake up"); 
-           for(brightness=0; brightness<255; brightness++){
-             analogWrite(led, brightness);
-             delay(1000);
+        if (timeleft == 0){
+          Serial.println("Time to wake up soon"); 
+          for(brightness=0; brightness<=255; brightness++){ //this for loop will last roughly 4,5 min before led's brightness is set to max
+            analogWrite(led, brightness);
+            delay(1000);
           }
         }
       }while(timeleft>0);
