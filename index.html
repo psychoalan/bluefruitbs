@@ -13,7 +13,7 @@
     </head>
      <body onload="onLoad()">
 
-		<h1>Bluifruit test</h1>
+		<h1>LED LAMP</h1>
            
 		<ul id="bleDeviceList"> </ul>  
 		<button id="refreshButton" onClick = "refreshDeviceList()">Refresh</button>
@@ -21,16 +21,17 @@
 		<div id="statusDiv">Status: Disconnected</div>
 		<div id="bleId">DeviceId:</div>
 		<div id="debugDiv"></div>
-		<br>
+		<!--<br>
 		<h4>Set brightness</h4>
 		<input type="range" min="0" max="255" step="0.1" val="20">
-		<br>
-		<button id="ledOnButton" onclick = "sendData('1')">Set led ON</button>
+		<br> -->
+		<button id="ledOnButton" onclick = "sendData('1')">Turn ON</button>
 		<br><br>
-		<button id="ledOffButton" onclick = "sendData('0')">Set Led Off</button>
+		<button id="ledOffButton" onclick = "sendData('0')">Turn Off</button>
 		<br><br>
-		<button id="ledDimButton" onclick = "sendData('2')">Set Led to Dim</button>
+		<button id="ledDimButton" onclick = "sendData('2')">Change brightness</button>
 		<br><br><br>
+		
 		<!-- <input type="text" id="messageInput" value="Hello"/>
 		<br>
 		<button id="sendButton" onclick = "sendData()">Send</button>
@@ -46,16 +47,14 @@
 		<div class="alarm-form">
 		<div class="alarm-form">
 		<form id="alarmForm"form onsubmit="return false;">
-			<input id="alarmHour" type="number" form="alarmForm" class="alarm-input" placeholder="insert hours (hh)"/>
-            <input id="alarmMinute" type="number"class="alarm-input" placeholder="insert minutes (mm)"/>
-            <input id="alarmSecond" type="number" class="alarm-input" placeholder="insert seconds (ss)"/>
-            <button id="setAlarmBtn" form="alarmForm" class="alarm-btn set-btn" onclick="myFunction()">SET ALARM</button>
-			<!-- This works: <button id="setAlarmBtn" form="alarmForm" class="alarm-btn set-btn" onclick="sendTime('60')">SET ALARM</button> -->
+			<input id="alarmHour" type="number" form="alarmForm" class="alarm-input" placeholder="Insert hours (hh)"/>
+            <input id="alarmMinute" type="number"class="alarm-input" placeholder="Insert minutes (mm)"/>
+            <input id="alarmSecond" type="number" class="alarm-input" placeholder="Insert seconds (ss)"/>
+            <button id="setAlarmBtn" form="alarmForm" class="alarm-btn set-btn" onclick="myFunction()">Set Alarm</button>
 			<br><br>
 		</form>
 		</div>
 		<br>
-		<!--  <button id="disconnectButton"onClick="disconnect()">Disconnect</button> -->
 		<div id="receiveDiv"></div>
     </body>
 </html>

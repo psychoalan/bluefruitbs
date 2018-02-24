@@ -145,7 +145,7 @@ function myFunction() {
 		var alarmRings = alarmRings1.toString(); 
 		var div = document.createElement('div');
 		
-		div.innerHTML = "Alarm will ring in:" + alarmRings +"seconds" ;
+		div.innerHTML = "Alarm will ring in: " + alarmRings +"seconds" ;
 		document.body.appendChild(div);
 		sendTime(alarmRings);
 	}
@@ -153,14 +153,10 @@ function myFunction() {
 		var alarmRings1= setTimeInSeconds + (86400-currentTimeInSecond);
 		var alarmRings = alarmRings1.toString(); 
 		var div = document.createElement('div');
-		div.innerHTML = "Alarm will ring in:" + alarmRings + " seconds";
+		div.innerHTML = "Alarm will ring in: " + alarmRings + " seconds";
 		document.body.appendChild(div);
 		sendTime(alarmRings);
 	}
-	
-
-	
-					
 }
 function sendTime(alarmRingsStr) { // send alarm to Arduino
 	var alarmRings = stringToBytes(alarmRingsStr);
